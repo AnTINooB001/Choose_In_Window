@@ -7,11 +7,11 @@ LPCWSTR szIconName = L"MYICON"; //имя иконки
 LPCWSTR szProgName = L"Progname"; //имя программы
 LPCWSTR szText = L"Поздравляю, теперь вы умеете работать с мышью!";
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
-	HWND hWnd; //идентификатор окна
 	MSG lpMsg; //идентификатор сообщения
+
+	
 	WNDCLASS w; //создаём экземпляр структуры WNDCLASS
 	HWND hwnd;
 
@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	w.hCursor = LoadCursor(NULL, IDC_ARROW); //загружаем курсор
 	w.hIcon = LoadIcon(hInstance, szIconName); //загружаем нашу иконку
 	w.lpszMenuName = 0; //меню пока не будет
-	w.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); //цвет фона окна
+	w.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH); //цвет фона окна
 	w.style = CS_HREDRAW | CS_VREDRAW; //стиль - перерисовываемое по х и по у
 	w.cbClsExtra = 0;
 	w.cbWndExtra = 0;
@@ -33,10 +33,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//Создадим окно в памяти, заполнив аргументы CreateWindow
 	hWnd = CreateWindow(szProgName, //Имя программы
-		L"Моя первая программа!", //Заголовок окна
+		L"ТЫ ГЕЙ?", //Заголовок окна
 		WS_OVERLAPPEDWINDOW, //Стиль окна - перекрывающееся
-		100, //положение окна на экране по х
-		100, //по у
+		600, //положение окна на экране по х
+		300, //по у
 		500, //размеры по х
 		400, //по у
 		(HWND)NULL, //идентификатор родительского окна
@@ -68,104 +68,55 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 	WPARAM wParam, LPARAM lParam)
 {
-	HDC hdc; //создаём контекст устройства
-	PAINTSTRUCT ps; //создаём экземпляр структуры графического вывода
+	int xPosCur;
+	int yPosCur;
 
 	//Цикл обработки сообщений
 	switch (messg)
 	{
-	case WM_COMMAND:
-	{
-		
-		switch (wParam)
-		{
-			
-		//case OnButton:
-		//	
-		//	//addWindow(hWnd);
-		//	
-		//	while (i != 1000)
-		//	{
-		//		
-		//		addWindow(hWnd);
-		//		i++;
-		//	}
-			break;
 	
-		
-		break;
-
-		default:
-			break;
-		}
-		break;
-	}
-	int xPosCur;
-	int yPosCur;
-	int cxScreen;
-	int cyScreen;
-	int a, b;
 	case WM_MOUSEMOVE:
 
 		RECT rc;
 		
-		WINDOWPLACEMENT wpls;
-
-		//m.type = INPUT_MOUSE;
-		//m.mi.dwFlags = MOUSEEVENTF_MOVE;
-		//m.mi.dx = p.x;
-		//m.mi.dy = p.y;
-		
 		GetWindowRect(ButtonWnd, &rc);
-		
-		//POINT mp;
 
-		//GetCursorPos(&mp);
-		GetWindowPlacement(ButtonWnd, &wpls);
-		
 		xPosCur = LOWORD(lParam); //узнаём координаты
 		yPosCur = HIWORD(lParam);
 		
-		SetWindowTextA(editText2, str1);
-		//cxScreen = GetSystemMetrics(SM_CXSCREEN); размеры экрана
-		//cyScreen = GetSystemMetrics(SM_CYSCREEN);
+		//showCursCoordinates(xPosCur, yPosCur);
 
-		showCursCoordinates(xPosCur, yPosCur);
+		WndP1 = Convert(hWnd, rc.left, rc.top);
+		WndP2 = Convert(hWnd, rc.right, rc.bottom);
 
-		if (xPosCur > rc.top && xPosCur < rc.bottom )
-		{
-			//addWindow();
-			SetWindowTextA(ButtonWnd, "ddd");
-		}
+		//ShowWndPos(WndP2);
 		
-	
+		if (!((yPosCur <= WndP1.y && xPosCur <= WndP1.x)|| (yPosCur >= WndP2.y && xPosCur >= WndP2.x)))
+		{
+			
+			SetWindowTextA(ButtonWnd, "НЕТ");
+			SetWindowPos(ButtonWnd, NULL, std::rand() % 300, std::rand() % 250, 40, 40, NULL);
+		};	
+		
 		break;
-	//	int x, y; //координаты
 
-	//	//Если был щелчок левой или правой кнопкой
-	//case WM_RBUTTONDOWN:
-	//case WM_LBUTTONDOWN:
-	//	char* str;
-	//	HDC hDC;
-	//	
-	//	hDC = GetDC(hWnd);
-	//	x = LOWORD(lParam); //узнаём координаты
-	//	y = HIWORD(lParam);
-	//	
-	//	
-
-	//	TextOut(hDC, x, y, szText , strlen("Поздравляю, теперь вы умеете работать с мышью!"));
-	//	
-	//	/*int X, Y;
-	//	X = LOWORD(lParam);
-	//	Y = HIWORD(lParam);
-	//	SetWindowTextA(editText, (LPCSTR)X);*/
-	//	break;
 		case WM_CREATE:
-			
+		{
 			AddWndVidget(hWnd);
-			
+		}
 			break;
+		case WM_COMMAND:
+		{
+
+			switch (wParam)
+			{
+
+			case OnYes:
+				MessageBoxA(hWnd, "ХЕ ХЕ ", "Я ТОЖЕ", MB_OK);
+
+			}
+
+		}
 		//сообщение выхода - разрушение окна
 	case WM_DESTROY:
 		PostQuitMessage(0); //Посылаем сообщение выхода с кодом 0 - нормальное завершение
@@ -180,9 +131,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 void AddWndVidget(HWND hWnd)
 {
 	
-	editText = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 110, 110, 100, 30, hWnd, NULL, NULL, NULL);
-	editText2 = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 150, 110, 100, 30, hWnd, NULL, NULL, NULL);
-	ButtonWnd = CreateWindowA("static", "click me", WS_VISIBLE | WS_CHILD, 10, 10, 100, 100, hWnd, (HMENU)OnButton, NULL, NULL);
+	editText = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 1100, 110, 100, 30, hWnd, NULL, NULL, NULL);
+	editText2 = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 1500, 110, 100, 30, hWnd, NULL, NULL, NULL);
+	ButtonWnd = CreateWindowA("button", "НЕТ", WS_VISIBLE | WS_CHILD, 10, 10, 40, 40, hWnd, NULL, NULL, NULL);
+	WndText = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 2100, 210, 100, 30, hWnd, NULL, NULL, NULL);
+	WndText2 = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 2500, 210, 100, 30, hWnd, NULL, NULL, NULL);
+	YesButt = CreateWindowA("button", "ДА", WS_VISIBLE | WS_CHILD , 230, 125, 40, 40, hWnd, (HMENU)OnYes, NULL, NULL);
 }
 void addWindow()
 {
@@ -225,13 +179,14 @@ std::string addYToString(std::string str)
 
 void showCursCoordinates(int xPosCur, int yPosCur)
 {
-	str = std::to_string(xPosCur);
-	str = addXToString(str);
-	str1 = convertStringToLPCSTR(str);
-	SetWindowTextA(editText, str1);
-	str = std::to_string(yPosCur);
-	str = addYToString(str);
-	str1 = convertStringToLPCSTR(str);
+	Curstr = std::to_string(xPosCur);
+	Curstr = addXToString(Curstr);
+	Curstr1 = convertStringToLPCSTR(Curstr);
+	SetWindowTextA(editText, Curstr1);
+	Curstr = std::to_string(yPosCur);
+	Curstr = addYToString(Curstr);
+	Curstr1 = convertStringToLPCSTR(Curstr);
+	SetWindowTextA(editText2, Curstr1);
 
 	if (!(xPosCur > 999 || yPosCur > 999))
 	{
@@ -244,4 +199,30 @@ void showCursCoordinates(int xPosCur, int yPosCur)
 		SetWindowPos(editText2, NULL, xPosCur + 63, yPosCur + 13, 45, 20, NULL);
 	}
 	
+}
+
+POINT Convert( HWND w, LONG& x, LONG& y)
+{
+	POINT tmp;
+	tmp.x = x; tmp.y = y;
+	ScreenToClient(w, &tmp);
+	x = tmp.x; y = tmp.y;
+	return tmp;
+
+}
+
+
+void ShowWndPos(POINT p)
+{
+	str = std::to_string(p.x);
+	str = addXToString(str);
+	str1 = convertStringToLPCSTR(str);
+	SetWindowTextA(WndText, str1);
+	str = std::to_string(p.y);
+	str = addYToString(str);
+	str1 = convertStringToLPCSTR(str);
+	SetWindowTextA(WndText2, str1);
+
+	SetWindowPos(WndText, NULL, p.x + 13, p.y + 13, 40, 20, NULL);
+	SetWindowPos(WndText2, NULL, p.x + 53, p.y + 13, 40, 20, NULL);
 }
