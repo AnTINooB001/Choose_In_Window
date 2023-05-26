@@ -6,32 +6,23 @@
 #define OnYes 0
 
 HWND hWnd; //идентификатор окна
-
 HWND YesButt;
-
-POINT p;
-INPUT m;
-
-std::string Curstr;
-std::string str;
-
+HWND WndText;
+HWND WndText2;
+HWND ButtonWnd;
+HWND editText;
+HWND editText2;
 
 POINT WndP1;
-
 POINT WndP2;
-
-
+POINT p;
+INPUT m;
+std::string Curstr;
+std::string str;
 LPCSTR Curstr1;
 LPCSTR str1;
 LPCSTR str2;
 
-HWND WndText;
-HWND WndText2;
-HWND ButtonWnd;
-
-
-HWND editText;
-HWND editText2;
 
 
 void AddWndVidget(HWND hWnd);
