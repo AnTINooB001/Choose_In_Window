@@ -1,17 +1,5 @@
-﻿#include "windows.h"
-#include <iostream>
+﻿#include "Header.h"
 
-POINT p;
-INPUT m;
-
-
-#define OnButton 1
-int i = 0;
-void AddWndVidget(HWND hWnd);
-HWND editText;
-HWND ButtonWnd;
-//#define WM_NCMOUSEMOVE 
-void addWindow(HWND hWnd);
 //Создаём прототип функции окна
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -120,7 +108,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 	case WM_MOUSEMOVE:
 
 		RECT rc;
-		
+		HDC hDC;
+		hDC = GetDC(hWnd);
 		WINDOWPLACEMENT wpls;
 
 		//m.type = INPUT_MOUSE;
@@ -137,13 +126,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 
 		xPosCur = LOWORD(lParam); //узнаём координаты
 		yPosCur = HIWORD(lParam);
-		
+		str = std::to_string(xPosCur);
+		str = addXToString(str);
+		str1 = convertStringToLPCSTR(str);
+		SetWindowTextA(editText, str1);
+		str = std::to_string(yPosCur);
+		str = addYToString(str);
+		str1 = convertStringToLPCSTR(str);
+		SetWindowTextA(editText2, str1);
 		//cxScreen = GetSystemMetrics(SM_CXSCREEN); размеры экрана
 		//cyScreen = GetSystemMetrics(SM_CYSCREEN);
-		if ((xPosCur > rc.left && yPosCur < rc.top) && (xPosCur < rc.right && yPosCur > rc.bottom))
+		if (xPosCur > rc.left && xPosCur < rc.right )
 		{
-			addWindow(hWnd);
-			SetWindowTextA(editText, "ddd");
+			//addWindow();
+			SetWindowTextA(ButtonWnd, "ddd");
 		}
 		
 	
@@ -188,13 +184,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 void AddWndVidget(HWND hWnd)
 {
 	
-	editText = CreateWindowA("edit", "fffffffffffffffffffff", WS_VISIBLE | WS_CHILD, 110, 110, 100, 30, hWnd, NULL, NULL, NULL);
-	ButtonWnd = CreateWindowA("button", "click me", WS_VISIBLE | WS_CHILD, 10, 10, 100, 100, hWnd, (HMENU)OnButton, NULL, NULL);
+	editText = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 110, 110, 100, 30, hWnd, NULL, NULL, NULL);
+	editText2 = CreateWindowA("static", " ", WS_VISIBLE | WS_CHILD, 150, 110, 100, 30, hWnd, NULL, NULL, NULL);
+	ButtonWnd = CreateWindowA("static", "click me", WS_VISIBLE | WS_CHILD, 10, 10, 100, 100, hWnd, (HMENU)OnButton, NULL, NULL);
 }
-void addWindow(HWND hWnd)
+void addWindow()
 {
 	HWND hWnd2;
 	
-	hWnd2 = CreateWindow(szProgName, L"ERROR", WS_VISIBLE | WS_OVERLAPPED, std::rand() % 2000, std::rand() % 1000, 100, 100, hWnd, NULL, NULL, NULL);
+	hWnd2 = CreateWindow(szProgName, L"ERROR", WS_VISIBLE | WS_OVERLAPPED, std::rand() % 200, std::rand() % 100, 400, 400, NULL, NULL, NULL, NULL);
 	
+}
+
+LPCSTR convertStringToLPCSTR(std::string str)
+{
+	int size = str.size();
+	char* baffer = new char[100];
+	
+	for (int i = 0; i < str.size(); i++)
+	{
+		baffer[i] = str[i];
+	}
+	baffer[str.size()] = '\0';
+	
+	return baffer;
+	delete[] baffer;
+}
+
+std::string addXToString(std::string str)
+{
+	str.resize(str.size() + 1);
+	str[str.size()-1] = 'X';
+	str[str.size()] = '\0';
+	return str;
+}
+
+std::string addYToString(std::string str)
+{
+	str.resize(str.size() + 1);
+	str[str.size() - 1] = 'Y';
+	str[str.size()] = '\0';
+	return str;
 }
