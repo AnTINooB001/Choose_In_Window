@@ -20,5 +20,6 @@ HWND ButtonWnd;
 void addWindow();
 std::string addXToString(std::string str);
 std::string addYToString(std::string str);
+void showCursCoordinates(int xPosCur, int yPosCur);
 
 

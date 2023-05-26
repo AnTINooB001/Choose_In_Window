@@ -108,8 +108,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 	case WM_MOUSEMOVE:
 
 		RECT rc;
-		HDC hDC;
-		hDC = GetDC(hWnd);
+		
 		WINDOWPLACEMENT wpls;
 
 		//m.type = INPUT_MOUSE;
@@ -118,12 +117,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 		//m.mi.dy = p.y;
 		
 		GetWindowRect(ButtonWnd, &rc);
+		
+		//POINT mp;
 
-		POINT mousePoint;
-
-		GetCursorPos(&mousePoint);
+		//GetCursorPos(&mp);
 		GetWindowPlacement(ButtonWnd, &wpls);
-
+		
 		xPosCur = LOWORD(lParam); //узнаём координаты
 		yPosCur = HIWORD(lParam);
 		str = std::to_string(xPosCur);
@@ -136,7 +135,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 		SetWindowTextA(editText2, str1);
 		//cxScreen = GetSystemMetrics(SM_CXSCREEN); размеры экрана
 		//cyScreen = GetSystemMetrics(SM_CYSCREEN);
-		if (xPosCur > rc.left && xPosCur < rc.right )
+		showCursCoordinates(xPosCur, yPosCur);
+		if (xPosCur > rc.top && xPosCur < rc.bottom )
 		{
 			//addWindow();
 			SetWindowTextA(ButtonWnd, "ddd");
@@ -225,4 +225,19 @@ std::string addYToString(std::string str)
 	str[str.size() - 1] = 'Y';
 	str[str.size()] = '\0';
 	return str;
+}
+
+void showCursCoordinates(int xPosCur, int yPosCur)
+{
+	if (xPosCur > 999 || yPosCur < 999)
+	{
+		SetWindowPos(editText, NULL, xPosCur + 13, yPosCur + 13, 40, 20, NULL);
+		SetWindowPos(editText2, NULL, xPosCur + 53, yPosCur + 13, 40, 20, NULL);
+	}
+	else
+	{
+		SetWindowPos(editText, NULL, xPosCur + 13, yPosCur + 13, 60, 20, NULL);
+		SetWindowPos(editText2, NULL, xPosCur + 63, yPosCur + 13, 45, 20, NULL);
+	}
+	
 }
