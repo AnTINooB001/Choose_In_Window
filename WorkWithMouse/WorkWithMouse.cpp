@@ -125,17 +125,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 		
 		xPosCur = LOWORD(lParam); //узнаём координаты
 		yPosCur = HIWORD(lParam);
-		str = std::to_string(xPosCur);
-		str = addXToString(str);
-		str1 = convertStringToLPCSTR(str);
-		SetWindowTextA(editText, str1);
-		str = std::to_string(yPosCur);
-		str = addYToString(str);
-		str1 = convertStringToLPCSTR(str);
+		
 		SetWindowTextA(editText2, str1);
 		//cxScreen = GetSystemMetrics(SM_CXSCREEN); размеры экрана
 		//cyScreen = GetSystemMetrics(SM_CYSCREEN);
+
 		showCursCoordinates(xPosCur, yPosCur);
+
 		if (xPosCur > rc.top && xPosCur < rc.bottom )
 		{
 			//addWindow();
@@ -229,6 +225,14 @@ std::string addYToString(std::string str)
 
 void showCursCoordinates(int xPosCur, int yPosCur)
 {
+	str = std::to_string(xPosCur);
+	str = addXToString(str);
+	str1 = convertStringToLPCSTR(str);
+	SetWindowTextA(editText, str1);
+	str = std::to_string(yPosCur);
+	str = addYToString(str);
+	str1 = convertStringToLPCSTR(str);
+
 	if (!(xPosCur > 999 || yPosCur > 999))
 	{
 		SetWindowPos(editText, NULL, xPosCur + 13, yPosCur + 13, 40, 20, NULL);
@@ -236,7 +240,7 @@ void showCursCoordinates(int xPosCur, int yPosCur)
 	}
 	else
 	{
-		SetWindowPos(editText, NULL, xPosCur + 13, yPosCur + 13, 60, 20, NULL);
+		SetWindowPos(editText, NULL, xPosCur + 13, yPosCur + 13, 50, 20, NULL);
 		SetWindowPos(editText2, NULL, xPosCur + 63, yPosCur + 13, 45, 20, NULL);
 	}
 	
