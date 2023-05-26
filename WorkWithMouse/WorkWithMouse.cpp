@@ -229,7 +229,7 @@ std::string addYToString(std::string str)
 
 void showCursCoordinates(int xPosCur, int yPosCur)
 {
-	if (xPosCur > 999 || yPosCur < 999)
+	if (!(xPosCur > 999 || yPosCur > 999))
 	{
 		SetWindowPos(editText, NULL, xPosCur + 13, yPosCur + 13, 40, 20, NULL);
 		SetWindowPos(editText2, NULL, xPosCur + 53, yPosCur + 13, 40, 20, NULL);
