@@ -148,27 +148,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 		
 	
 		break;
-		int x, y; //координаты
+	//	int x, y; //координаты
 
-		//Если был щелчок левой или правой кнопкой
-	case WM_RBUTTONDOWN:
-	case WM_LBUTTONDOWN:
-		char* str;
-		HDC hDC;
-		
-		hDC = GetDC(hWnd);
-		x = LOWORD(lParam); //узнаём координаты
-		y = HIWORD(lParam);
-		
-		
+	//	//Если был щелчок левой или правой кнопкой
+	//case WM_RBUTTONDOWN:
+	//case WM_LBUTTONDOWN:
+	//	char* str;
+	//	HDC hDC;
+	//	
+	//	hDC = GetDC(hWnd);
+	//	x = LOWORD(lParam); //узнаём координаты
+	//	y = HIWORD(lParam);
+	//	
+	//	
 
-		TextOut(hDC, x, y, szText , strlen("Поздравляю, теперь вы умеете работать с мышью!"));
-		
-		/*int X, Y;
-		X = LOWORD(lParam);
-		Y = HIWORD(lParam);
-		SetWindowTextA(editText, (LPCSTR)X);*/
-		break;
+	//	TextOut(hDC, x, y, szText , strlen("Поздравляю, теперь вы умеете работать с мышью!"));
+	//	
+	//	/*int X, Y;
+	//	X = LOWORD(lParam);
+	//	Y = HIWORD(lParam);
+	//	SetWindowTextA(editText, (LPCSTR)X);*/
+	//	break;
 		case WM_CREATE:
 			
 			AddWndVidget(hWnd);
