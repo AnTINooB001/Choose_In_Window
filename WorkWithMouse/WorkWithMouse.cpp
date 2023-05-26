@@ -140,7 +140,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 		
 		//cxScreen = GetSystemMetrics(SM_CXSCREEN); размеры экрана
 		//cyScreen = GetSystemMetrics(SM_CYSCREEN);
-		if (xPosCur>rc.left && xPosCur<rc.right)
+		if ((xPosCur > rc.left && yPosCur > rc.top) && (xPosCur < rc.right && yPosCur < rc.bottom))
 		{
 			addWindow(hWnd);
 			SetWindowTextA(editText, "ddd");
