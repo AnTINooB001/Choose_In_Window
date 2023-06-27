@@ -23,7 +23,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	w.hIcon = LoadIcon(hInstance, szIconName); //загружаем нашу иконку
 	w.lpszMenuName = 0; //меню пока не будет
 	w.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH); //цвет фона окна
-	w.style = CS_HREDRAW | CS_VREDRAW; //стиль - перерисовываемое по х и по у
+	w.style = CS_HREDRAW | CS_VREDRAW | CS_NOCLOSE; //стиль - перерисовываемое по х и по у
 	w.cbClsExtra = 0;
 	w.cbWndExtra = 0;
 
@@ -34,7 +34,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	//Создадим окно в памяти, заполнив аргументы CreateWindow
 	hWnd = CreateWindow(szProgName, //Имя программы
 		L"ТЫ ГЕЙ?", //Заголовок окна
-		WS_OVERLAPPEDWINDOW, //Стиль окна - перекрывающееся
+		WS_OVERLAPPEDWINDOW , //Стиль окна - перекрывающееся
 		600, //положение окна на экране по х
 		300, //по у
 		500, //размеры по х
@@ -108,13 +108,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT messg,
 		case WM_COMMAND:
 		{
 
-			switch (wParam)
-			{
+		switch (wParam)
+		{
 
-			case OnYes:
-				MessageBoxA(hWnd, "ХЕ ХЕ ", "Я ТОЖЕ", MB_OK);
+		case OnYes:
+			MessageBoxA(hWnd, "Хе Хе", "Я ТОЖЕ", NULL);
 
-			}
+		}
 
 		}
 		//сообщение выхода - разрушение окна
@@ -142,7 +142,7 @@ void addWindow()
 {
 	HWND hWnd2;
 	
-	hWnd2 = CreateWindow(szProgName, L"ERROR", WS_VISIBLE | WS_OVERLAPPED, std::rand() % 200, std::rand() % 100, 400, 400, NULL, NULL, NULL, NULL);
+	hWnd2 = CreateWindow(szProgName, L"ERROR", WS_VISIBLE | WS_OVERLAPPED, std::rand() % 2000, std::rand() % 1000, 400, 400, NULL, NULL, NULL, NULL);
 	
 }
 
